@@ -1,0 +1,5 @@
+django
+matplotlib
+numpy
+pandas
+django-rest-framework
