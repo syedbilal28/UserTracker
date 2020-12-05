@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout,authenticate
 from .forms import LoginForm,SignupForm,ProfileForm
 import pandas as pd
-from datetime import datetime,date
+from datetime import datetime,date,timedelta
 from .serializers import LoginSerializer
 import pandas.io.json as pd_json
 import matplotlib
@@ -16,6 +16,7 @@ import random
 import numpy as np
 import urllib,base64
 from django.http import JsonResponse
+import pytz
 # Create your views here.
 
 def index(request):
@@ -73,7 +74,7 @@ def home(request):
         return render(request,"home.html",context)
         # login_count=Login.objects.filter(timestamp__lte=datetime.now())
 def CurrentDayBar(request):
-    l=Login.objects.filter(timestamp__date=date.today())
+    l=Login.objects.filter(timestamp__date=datetime.now(pytz.timezone("America/Grenada")).date())
     dict_time={}
     for i in range(24):
         if i==0:
@@ -100,6 +101,35 @@ def CurrentDayBar(request):
     return render(request,"test.html",{"data":url})
 
 def DaysBar(request):
+    current_date=datetime.now(pytz.timezone("America/Grenada")).date() 
+    dates=[]
+    for i in range(6,0,-1):
+        dates.append(current_date- timedelta(days=i))
+    dates.append(current_date)
+    print(dates)
+    l=Login.objects.filter(timestamp__date__in=dates)
+    dict_ref={}
+    len_l=len(l)
+    for i in range(7):
+        dict_ref[str(dates[i])]=0
+    print(dict_ref)
+    for i in range(len_l):
+        dict_ref[str(l[i].timestamp.date())] +=1
     
+    objects = list(dict_ref.keys())
+    y_pos = np.arange(len(objects))
+    performance = list(dict_ref.values())
+
+    plt.bar(y_pos, performance, align='center', alpha=0.5)
+    plt.xticks(y_pos, objects)
+    plt.ylabel('Logins')
+    plt.title('Logins per hour')
+    f = io.BytesIO()
+    plt.savefig(f,format="png")
+    plt.close()
+    f.seek(0)
+    string=base64.b64encode(f.read())
+    url=urllib.parse.quote(string)
+    return render(request,"test.html",{"data":url})
     
     
