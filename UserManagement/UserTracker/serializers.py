@@ -4,14 +4,14 @@ from django.contrib.auth.models import User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model=User
-        fields=["id","username","first_name"]
+        fields=["id","username","first_name","last_name","email"]
 
 
 class ProfileSerializer(serializers.ModelSerializer):
     user=UserSerializer()
     class Meta:
         model=Profile
-        fields=["user","Status","Department"]
+        fields=["user","Status","Department","Contact_number"]
 class LoginSerializer(serializers.ModelSerializer):
     profile=ProfileSerializer()
     timestamp=serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
