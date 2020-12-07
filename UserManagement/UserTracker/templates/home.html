@@ -4,8 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script type="text/javascript"  src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/"
+    crossorigin="anonymous"></script>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script><!-- html2canvas 1.0.0-alpha.11 or higher version is needed -->
+
     <title>Dashboard</title>
     <style>
        @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@200;400&display=swap");
@@ -74,23 +79,90 @@ tr:hover td {
     text-decoration: none;
     list-style-type: none;
     padding-left: 1rem;
+    padding-right: 0.5rem;
   }
   #dataholder li p{
     color:#56bb2a;
   }
   .container{
     margin-left: 15%;
+    margin-top: 3%;
   }
   #Logo img{
-    width:15rem;
-    height:15rem
+    width:10rem;
+    height:10rem
   }
   hr{
     border: 1px solid #17191c;
     margin-left:-15px;
     opacity:0.3;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  #DataTables_Table_0_length{
+    display: inline-block;
+  }
+  #DataTables_Table_0_filter{
+    display: inline-block;
+    float: right;
+    margin-right: 1rem;
+  }
+  #first_table{
+    font-family: "Nunito", sans-serif;
+  }
+  .btn-success{
+    margin-left: 17rem;
+  }
+  #DataTables_Table_0{
+    margin-top: 1rem;
+  }
+  input{
+    margin-left: 0.5rem;
+    border: 1px solid #d6cece;
+  }
+  #DataTables_Table_0_info{
+    display: inline-block;
+  }
+  #DataTables_Table_0_paginate{
+    display: inline-block;
+    float: right;
+    
+  }
+  #DataTables_Table_0_paginate a{
+    padding:0.5rem;
+    color:#56bb2a;
+  }
+  #DataTables_Table_0_paginate a:hover{
+    cursor: pointer;
+  }
+  #bargraphweek{
+    display: inline-block;
+  }
+  #bargraphmonth{
+    display: inline-block;
+  }
+  #bargraphweek img{
+    margin-left:-2rem;
+    width:35rem;
+  }
+  #bargraphmonth img{
+    margin-left:-2rem;
+    width:35rem;
   }
     </style>
+    <script>
+      $(document).ready(function(){
+        $('Table').dataTable();
+        const div_to_add=document.querySelector(".dataTables_length")
+        const btn=document.createElement("button")
+        btn.className="btn btn-success"
+        btn.type="button"
+        btn.innerText="Download Data"
+        div_to_add.append(btn)
+        btn.onclick=download
+        $('select').classname="form-control"
+      });
+    </script>
 </head>
 <body>
   <div id="sidebar">
@@ -131,19 +203,23 @@ tr:hover td {
   </div>
     <div class="container">
         <div id="first_table">
+          
             {{ table | safe }}
         </div>
         <div id="bargraph24">
           <img src="" alt="">
         </div>
-        <div id="bargraphweek">
-          <img src="" alt="">
-        </div>
-        <div id="bargraphmonth">
-          <img src="" alt="">
+        <div class='row'>
+          <div id="bargraphweek" class="col-sm">
+            <img src="" alt="">
+          </div>
+          <div id="bargraphmonth" class="col-sm">
+            <img src="" alt="">
+          </div>
         </div>
     </div>
     <script>
+      
       $.ajax({
         url: '/bargraph/',
         // data: {
@@ -180,6 +256,16 @@ tr:hover td {
           target_week.children[0].src=`data:image/png;base64,${data.data}`
         }
       });
+      function download() {
+        let pdf = new jsPDF('l', 'pt', [1920, 640]);
+        pdf.html(document.querySelector('#DataTables_Table_0'), {
+            callback: function (pdf) {
+                pdf.save('test.pdf');
+            }
+        });
+    }
     </script>
+
+
 </body>
 </html>
