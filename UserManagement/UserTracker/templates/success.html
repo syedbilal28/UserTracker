@@ -71,7 +71,7 @@
          margin-right: 4rem;
      }
      #form_container{
-         display: none;
+         /* display: none; */
          position: absolute;
          /* right:21%;
          top:10%; */
@@ -170,22 +170,10 @@
         
         <div id="top">
             <!-- <img src="{% static 'homepage.jpeg' %}" alt=""> -->
-            <nav>
-                
-                    <a href="{% url 'index' %}" id="logo">Logo</a>
-                    
-                    <a href="{% url 'signup' %}" id="signup">Signup</a>
-                    <a onclick="display_form()" id="signup">Login</a>
-                
-            </nav>
+           
             
             <div id="form_container">
-                <form method="post" action="{% url 'index' %}" id="form">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    
-                    <button type="submit" class="btn btn-primary" id="loginbtn">Login</button>
-                </form>
+                <h1>Successfull Logged in</h1>
             
             </div>
         </div>
@@ -195,10 +183,10 @@
     </div>
    
     <script>
-        function display_form (){
-            var to_change=$("#form_container")
-            console.log(to_change)
-            to_change.css('display','block')
+        setTimeout(myFunction, 3000)
+        function myFunction(){
+            window.location.href="/"
+
         }
     </script>
 </body>
