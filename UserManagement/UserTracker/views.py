@@ -37,7 +37,8 @@ def index(request):
             password=form.cleaned_data["password"]
             temperature=form.cleaned_data["temperature"]
             user=authenticate(request,username=username,password=password)
-            
+            if user is None:
+                return redirect('index')
             if user is not None:
                 login(request,user)
                 profile=Profile.objects.get(user=user)
@@ -68,7 +69,11 @@ def home(request):
     if request.user.profile.Status=="Admin":
         pd.set_option('display.max_colwidth', -1)
         login_last_10=Login.objects.all().order_by('-timestamp')
-        
+        l=len(login_last_10)
+        login_last_10=list(login_last_10)
+        for i in range(l):
+            if login_last_10[i].profile.company!=request.user.profile.company:
+                login_last_10.remove(i)
         login_last_10_data=LoginSerializer(login_last_10,many=True).data
         
         login_last_10_df=pd_json.json_normalize(login_last_10_data)
@@ -99,16 +104,21 @@ def CurrentDayBar(request):
             current_date=datetime.strptime(request.POST.get("starting_date"),"%d-%m-%Y").date()
         except:
             current_date=datetime.now(pytz.timezone("America/Grenada")).date() 
-        l=Login.objects.filter(timestamp__date=current_date)
+        login_data=Login.objects.filter(timestamp__date=current_date)
+        l=len(login_data)
+        login_data=list(login_data)
+        for i in range(l):
+            if login_data[i].profile.company!=request.user.profile.company:
+                login_data.remove(i)
         dict_time={}
         for i in range(24):
             if i==0:
                 i="00"
             dict_time[str(i)]=0
-        len_login=len(l)
+        len_login=len(login_data)
         for i in range(len_login):
             try:
-                dict_time[str(l[i].timestamp.hour)]+=1
+                dict_time[str(login_data[i].timestamp.hour)]+=1
             except:
                 pass
         
@@ -144,16 +154,21 @@ def DaysBar(request):
             dates.append(current_date- timedelta(days=i))
         dates.append(current_date)
         print(dates)
-        l=Login.objects.filter(timestamp__date__in=dates)
+        login_data=Login.objects.filter(timestamp__date__in=dates)
+        l=len(login_data)
+        login_data=list(login_data)
+        for i in range(l):
+            if login_data[i].profile.company!=request.user.profile.company:
+                login_data.remove(i)
         dict_ref={}
-        len_l=len(l)
+        len_l=len(login_data)
        
         for i in range(7):
             dict_ref[str(dates[i])]=0
 
         for i in range(len_l):
             try:
-                dict_ref[str(l[i].timestamp.date())] +=1
+                dict_ref[str(login_data[i].timestamp.date())] +=1
             except:
                 pass
         
@@ -205,15 +220,20 @@ def DaysBarWeek(request):
             dates.append(current_date- timedelta(days=i))
         dates.append(current_date)
         print(dates)
-        l=Login.objects.filter(timestamp__date__in=dates)
+        login_data=Login.objects.filter(timestamp__date__in=dates)
+        l=len(login_data)
+        login_data=list(login_data)
+        for i in range(l):
+            if login_data[i].profile.company!=request.user.profile.company:
+                login_data.remove(i)
         dict_ref={}
-        len_l=len(l)
+        len_l=len(login_data)
         for i in range(30):
             dict_ref[str(dates[i])]=0
       
         for i in range(len_l):
             try:
-                dict_ref[str(l[i].timestamp.date())] +=1
+                dict_ref[str(login_data[i].timestamp.date())] +=1
             except:
                 pass
         objects = list(dict_ref.keys())

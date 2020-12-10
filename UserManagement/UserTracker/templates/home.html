@@ -165,6 +165,9 @@ tr:hover td {
   .btn:hover{
     background-color: #439121;
   }
+  #flag{
+    background-color: #f25a5a;
+  }
     </style>
     <script>
       $(document).ready(function(){
@@ -180,6 +183,14 @@ tr:hover td {
         bar_graph(null,document.querySelector("#bargraph24"),'/bargraph/')
         bar_graph(null,document.querySelector("#bargraphweek"),'/daysbar/')
         bar_graph(null,document.querySelector("#bargraphmonth"),'/daysbarweek/')
+        var trs=document.querySelectorAll("td")
+      var l_tr=trs.length
+      for (var i = 0; i < l_tr ; i++){
+          if (parseFloat(trs[i].innerText) > 37.8 && parseFloat(trs[i].innerText) < 42){
+            console.log(trs[i])
+            trs[i].parentNode.id="flag"
+          }
+      }
         // var tds=$("td")
         
         // var l = tds.length
@@ -263,6 +274,7 @@ tr:hover td {
         </div>
     </div>
     <script>
+     
       function get_graph_data(e){
         // const request=new XMLHttpRequest()
         // document.querySelector("#bargraph24").children[1].value
