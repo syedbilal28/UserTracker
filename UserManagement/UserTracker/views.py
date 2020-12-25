@@ -19,6 +19,8 @@ from django.http import JsonResponse
 import pytz
 import random
 from threading import RLock
+from django.views.decorators.csrf import csrf_exempt
+
 verrou = RLock()
 # Create your views here.
 
@@ -33,12 +35,19 @@ def index(request):
             
             username=form.cleaned_data["username"]
             password=form.cleaned_data["password"]
-            
+            temperature=form.cleaned_data["temperature"]
             user=authenticate(request,username=username,password=password)
-            
+            if user is None:
+                return redirect('index')
             if user is not None:
                 login(request,user)
-                return redirect('home')
+                profile=Profile.objects.get(user=user)
+                Login.objects.create(profile=profile,temperature=temperature)
+               
+                if profile.Status== "Emp":
+                    return redirect('Success')
+                else:
+                    return redirect('home')
     else:
 
         form = LoginForm()
@@ -60,7 +69,11 @@ def home(request):
     if request.user.profile.Status=="Admin":
         pd.set_option('display.max_colwidth', -1)
         login_last_10=Login.objects.all().order_by('-timestamp')
-        
+        l=len(login_last_10)
+        login_last_10=list(login_last_10)
+        for i in range(l):
+            if login_last_10[i].profile.company!=request.user.profile.company:
+                login_last_10.remove(i)
         login_last_10_data=LoginSerializer(login_last_10,many=True).data
         
         login_last_10_df=pd_json.json_normalize(login_last_10_data)
@@ -82,17 +95,33 @@ def home(request):
         context={"table":login_last_10_table}
         return render(request,"home.html",context)
         # login_count=Login.objects.filter(timestamp__lte=datetime.now())
+@csrf_exempt
 def CurrentDayBar(request):
+    # print("from form",request.POST.get("starting_date"))
     with verrou:
-        l=Login.objects.filter(timestamp__date=datetime.now(pytz.timezone("America/Grenada")).date())
+        print("from form",request.POST.get("starting_date"))
+        try:
+            current_date=datetime.strptime(request.POST.get("starting_date"),"%d-%m-%Y").date()
+        except:
+            current_date=datetime.now(pytz.timezone("America/Grenada")).date() 
+        login_data=Login.objects.filter(timestamp__date=current_date)
+        l=len(login_data)
+        login_data=list(login_data)
+        for i in range(l):
+            if login_data[i].profile.company!=request.user.profile.company:
+                login_data.remove(i)
         dict_time={}
         for i in range(24):
             if i==0:
                 i="00"
             dict_time[str(i)]=0
-        len_login=len(l)
+        len_login=len(login_data)
         for i in range(len_login):
-            dict_time[str(l[i].timestamp.hour)]+=1
+            try:
+                dict_time[str(login_data[i].timestamp.hour)]+=1
+            except:
+                pass
+        
         objects = list(dict_time.keys())
         y_pos = np.arange(len(objects))
         performance = list(dict_time.values())
@@ -101,8 +130,8 @@ def CurrentDayBar(request):
         plt.figure(i,figsize=(11,4))
         plt.bar(y_pos, performance, align='center', alpha=0.5,color=["#56bb2a"])
         plt.xticks(y_pos, objects)
-        plt.ylabel('Logins')
-        plt.title('Logins per hour')
+        plt.ylabel('Logins',color="#56bb2a")
+        plt.title('Logins per hour',color="#56bb2a")
         f = io.BytesIO()
         plt.savefig(f,format="png")
         plt.close()
@@ -112,46 +141,64 @@ def CurrentDayBar(request):
         return JsonResponse({"data":url},safe=False)
     # return render(request,"test.html",{"data":url})
 
+@csrf_exempt
 def DaysBar(request):
     with verrou:
-        current_date=datetime.now(pytz.timezone("America/Grenada")).date() 
+        try:
+            current_date=datetime.strptime(request.POST.get("starting_date"),"%d-%m-%Y").date()
+        except:
+            current_date=datetime.now(pytz.timezone("America/Grenada")).date() 
+        # current_date=datetime.now(pytz.timezone("America/Grenada")).date()
         dates=[]
         for i in range(6,0,-1):
             dates.append(current_date- timedelta(days=i))
         dates.append(current_date)
         print(dates)
-        l=Login.objects.filter(timestamp__date__in=dates)
+        login_data=Login.objects.filter(timestamp__date__in=dates)
+        l=len(login_data)
+        login_data=list(login_data)
+        for i in range(l):
+            if login_data[i].profile.company!=request.user.profile.company:
+                login_data.remove(i)
         dict_ref={}
-        len_l=len(l)
-        days_dict={
-            "5":"Saturday",
-            "6":"Sunday",
-            "0":"Monday",
-            "1":"Tuesday",
-            "2":"Wednesday",
-            "3":"Thursday",
-            "4":"Friday"
-        }
+        len_l=len(login_data)
+       
         for i in range(7):
             dict_ref[str(dates[i])]=0
 
         for i in range(len_l):
-            dict_ref[str(l[i].timestamp.date())] +=1
-
+            try:
+                dict_ref[str(login_data[i].timestamp.date())] +=1
+            except:
+                pass
+        
+        dict_num_to_weekday={
+                "0":"Mon",
+                "1":"Tues",
+                "2":"Wed",
+                "3":"Thurs",
+                "4":"Fri",
+                "5":"Sat",
+                "6":"Sun"
+            }
+        dict_new={}
         for key in dict_ref:
-            dict_ref[str(datetime.strptime(key,"%Y-%m-%d").weekday())]=dict_ref[key]
-            del dict_ref[key]
-            print(datetime.strptime(key,"%Y-%m-%d").weekday())
-        objects = list(dict_ref.keys())
+            dict_new[datetime.strptime(key,"%Y-%m-%d").weekday()]=dict_ref[key]
+        dict_final={}
+        for key in dict_new:
+            dict_final[dict_num_to_weekday[str(key)]]=dict_new[key]
+        print(dict_final.keys())
+       
+        objects = list(dict_final.keys())
         y_pos = np.arange(len(objects))
-        performance = list(dict_ref.values())
+        performance = list(dict_final.values())
         
         i=i+1
         plt.figure(i)
         plt.bar(y_pos, performance, align='center', alpha=0.5,color=["#56bb2a"])
-        plt.xticks(y_pos, objects)
-        plt.ylabel('Logins')
-        plt.title('Logins per hour')
+        plt.xticks(y_pos,objects)
+        plt.ylabel('Logins',color="#56bb2a")
+        plt.title('Logins Per Day Over a week',color="#56bb2a")
         f = io.BytesIO()
         plt.savefig(f,format="png")
         plt.close()
@@ -160,24 +207,33 @@ def DaysBar(request):
         url=urllib.parse.quote(string)
         return JsonResponse({"data":url},safe=False)
     # return render(request,"test.html",{"data":url})
+@csrf_exempt
 def DaysBarWeek(request):
     with verrou:
-
-        current_date=datetime.now(pytz.timezone("America/Grenada")).date() 
+        try:
+            current_date=datetime.strptime(request.POST.get("starting_date"),"%d-%m-%Y").date()
+        except:
+            current_date=datetime.now(pytz.timezone("America/Grenada")).date() 
+        # current_date=datetime.now(pytz.timezone("America/Grenada")).date() 
         dates=[]
         for i in range(29,0,-1):
             dates.append(current_date- timedelta(days=i))
         dates.append(current_date)
         print(dates)
-        l=Login.objects.filter(timestamp__date__in=dates)
+        login_data=Login.objects.filter(timestamp__date__in=dates)
+        l=len(login_data)
+        login_data=list(login_data)
+        for i in range(l):
+            if login_data[i].profile.company!=request.user.profile.company:
+                login_data.remove(i)
         dict_ref={}
-        len_l=len(l)
+        len_l=len(login_data)
         for i in range(30):
             dict_ref[str(dates[i])]=0
-        print(dict_ref)
+      
         for i in range(len_l):
             try:
-                dict_ref[str(l[i].timestamp.date())] +=1
+                dict_ref[str(login_data[i].timestamp.date())] +=1
             except:
                 pass
         objects = list(dict_ref.keys())
@@ -188,9 +244,10 @@ def DaysBarWeek(request):
         plt.figure(i)
 
         plt.plot(y_pos, performance, alpha=0.5, color = "#56bb2a")
-        plt.xticks(y_pos, objects)
-        plt.ylabel('Logins')
-        plt.title('Logins per hour')
+        plt.xticks(ticks=[y_pos[0],y_pos[-1]],labels=[objects[0],objects[-1]])
+        # plt.xticks([objects[0],objects[-1]], visible=True, rotation="horizontal")
+        plt.ylabel('Logins',color="#56bb2a")
+        plt.title('Logins per Day Over a Month',color="#56bb2a")
         f = io.BytesIO()
         plt.savefig(f,format="png")
         plt.close()
@@ -199,4 +256,5 @@ def DaysBarWeek(request):
         url=urllib.parse.quote(string)
         return JsonResponse({"data":url},safe=False)
     # return render(request,"test.html",{"data":url})    
-    
+def Success(request):
+        return render(request,'success.html')
