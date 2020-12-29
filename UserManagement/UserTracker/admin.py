@@ -1,13 +1,13 @@
 from django.contrib import admin
-from .models import Profile,Login,Company, Website
+from .models import Profile,Login,Company, Customer
 # Register your models here.
 class LoginIndicator (admin.TabularInline):
     model = Login
 
-class ProfileAdmin(admin.ModelAdmin):
+class CustomerAdmin(admin.ModelAdmin):
     inlines = [LoginIndicator]
     class Meta:
-        model = Profile
+        model = Customer
 admin.site.register(Company)
-admin.site.register(Website)
-admin.site.register(Profile,ProfileAdmin)
+admin.site.register(Profile)
+admin.site.register(Customer,CustomerAdmin)
