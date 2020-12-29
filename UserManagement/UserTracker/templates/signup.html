@@ -12,7 +12,7 @@
         body{
             background-color: #d9d9d9;
             font-family: 'Open Sans', sans-serif;
-            font-size: 1.5vmin;
+            font-size: 2vmin;
         }
         .container{
             /* position:relative; */
@@ -29,7 +29,7 @@
             vertical-align: middle;
             margin-top: 15%;
             position: relative;
-            height:60%;
+            min-height:60%;
         }
         #left{
             /* border:1px solid black; */
@@ -44,7 +44,7 @@
             line-height: 2vh;
             width:50%;
             float:left;
-            height:100%;
+            min-height:100%;
             padding: 1rem;
            
         }
@@ -69,6 +69,7 @@
         h2{
             color: #fff;
             padding:3rem;
+            font-size: 4.5vmin;
         }
         #id_email{
             display:block;
@@ -90,6 +91,16 @@
         }
         select{
             border: 1px solid #d6cece;
+        }
+        @media only screen and (max-width: 768px) {
+            p,h2{
+        
+            padding-left: 0.5rem;
+            
+        }
+        #submit_button{
+            margin-left: 2rem;
+        }
         }
         
     </style>
@@ -120,6 +131,9 @@
         </div>
     </div>
 <script>
+    console.log($("#right").css("height"))
+    var left_height=$("#left").css("height")
+    $("#right").css("height",left_height)
     document.querySelector("#id_password").type="password"
     function auth_confirm() {
         if ($("#id_password").value() === $("#pass_confirm").value()){

@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['19809cffc75a.ngrok.io', '127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
+    'crispy_forms',
     'UserTracker',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -124,7 +125,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 MEDIA_URL="/media/"
 
 MEDIA_ROOT=os.path.join(BASE_DIR,'media')

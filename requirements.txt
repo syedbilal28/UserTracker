@@ -4,5 +4,5 @@ numpy
 pandas
 django-rest-framework
 pillow
-authall
-qrcode
+django-allauth
+django-qrcode

@@ -7,7 +7,8 @@ urlpatterns=[
     path('bargraph/',views.CurrentDayBar,name="CurrentDayBar"),
     path("daysbar/",views.DaysBar,name="DaysBar"),
     path("daysbarweek/",views.DaysBarWeek,name="DaysBarWeek"),
-    path("Success/",views.Success,name="Success")
+    # path("Success/",views.Success,name="Success"),
+    path("company/<str:company_id>/checkin",views.Checkin,name="Checkin")
     # path('logout/',views.Logout,name="Logout"),
     
 ]
