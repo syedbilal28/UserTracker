@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     
     <!-- semantic UI -->
     <link rel="stylesheet" type='text/css' href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.14/semantic.min.css">
@@ -16,12 +17,8 @@
     <title>bffbook </title>
   </head>
   <body>
-    <div class="ui container">
-
-    <h1>{{name}} - {{obj.name}}</h1>
-    <img src={{obj.qr_code.url}}>
-
-    </div>
+    <img src="http://127.0.0.1:8000/{{ qrcode }}" alt=""><br>
+    <a class="btn btn-primary" href="http://127.0.0.1:8000/{{ qrcode }}" download="http://127.0.0.1:8000/{{ qrcode }}"><button class="btn btn-primary">Download</button></a>
 
   </body>
 </html>

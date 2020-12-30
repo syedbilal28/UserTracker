@@ -38,16 +38,21 @@ def index(request):
             
             user=authenticate(request,username=username,password=password)
             if user is None:
+                request.session["message"]="Invalid username or password"
                 return redirect('index')
             if user is not None:
+                request.session["message"]=""
                 login(request,user)
                 profile=Profile.objects.get(user=user)
                 
                 return redirect('home')
     else:
-
+        try:
+            message=request.session.get("message")
+        except:
+            message=""
         form = LoginForm()
-        return render(request,'index.html',{"form":form})
+        return render(request,'index.html',{"form":form,"message":message})
 def Checkin(request,company_id):
     company =Company.objects.get(pk=int(company_id))
     if request.method=="POST":
@@ -140,9 +145,12 @@ def home(request):
         "customer.Contact_number":"Contact Number"
         })
     # login_last_10_df=login_last_10_df.drop("ID",axis=1)
-    login_last_10_df=login_last_10_df[["Check In Time","First Name","Last Name","Email Address","Contact Number","Temperature"]]
+    try:
+        login_last_10_df=login_last_10_df[["Check In Time","First Name","Last Name","Email Address","Contact Number","Temperature"]]
+    except:
+        login_last_10_df-login_last_10_df
     login_last_10_table=login_last_10_df.to_html(justify="center",index=False)
-    context={"table":login_last_10_table}
+    context={"table":login_last_10_table,"company":request.user.profile.company.pk}
     return render(request,"home.html",context)
         # login_count=Login.objects.filter(timestamp__lte=datetime.now())
 @csrf_exempt
@@ -151,7 +159,7 @@ def CurrentDayBar(request):
     with verrou:
         print("from form",request.POST.get("starting_date"))
         try:
-            current_date=datetime.strptime(request.POST.get("starting_date"),"%d-%m-%Y").date()
+            current_date=datetime.strptime(request.POST.get("starting_date"),"%Y-%m-%d").date()
         except:
             current_date=datetime.now(pytz.timezone("America/Grenada")).date() 
         login_data=Login.objects.filter(timestamp__date=current_date)
@@ -196,7 +204,7 @@ def CurrentDayBar(request):
 def DaysBar(request):
     with verrou:
         try:
-            current_date=datetime.strptime(request.POST.get("starting_date"),"%d-%m-%Y").date()
+            current_date=datetime.strptime(request.POST.get("starting_date"),"%Y-%m-%d").date()
         except:
             current_date=datetime.now(pytz.timezone("America/Grenada")).date() 
         # current_date=datetime.now(pytz.timezone("America/Grenada")).date()
@@ -263,7 +271,7 @@ def DaysBar(request):
 def DaysBarWeek(request):
     with verrou:
         try:
-            current_date=datetime.strptime(request.POST.get("starting_date"),"%d-%m-%Y").date()
+            current_date=datetime.strptime(request.POST.get("starting_date"),"%Y-%m-%d").date()
         except:
             current_date=datetime.now(pytz.timezone("America/Grenada")).date() 
         # current_date=datetime.now(pytz.timezone("America/Grenada")).date() 
@@ -311,3 +319,16 @@ def DaysBarWeek(request):
     # return render(request,"test.html",{"data":url})    
 # def Success(request):
 #         return render(request,'success.html')
+def HowItWorks(request):
+    return render(request,"howitworks.html")
+
+def qrcode(request):
+    qr_code=request.user.profile.company.qr_code.path
+    to_send=qr_code.split('\\')[-3:]
+    print(to_send)
+    path=""
+    for i in to_send:
+        path+=i+"/"
+    print(path)
+
+    return render(request,"qrcode.html",{"qrcode":path[:-1]})

@@ -130,25 +130,25 @@ MEDIA_URL="/media/"
 
 MEDIA_ROOT=os.path.join(BASE_DIR,'media')
 
-AUTHENTICATION_BACKENDS = (
- 'django.contrib.auth.backends.ModelBackend',
- 'allauth.account.auth_backends.AuthenticationBackend',
-)
+# AUTHENTICATION_BACKENDS = (
+#  'django.contrib.auth.backends.ModelBackend',
+#  'allauth.account.auth_backends.AuthenticationBackend',
+# )
 
-SITE_ID = 2
-LOGIN_REDIRECT_URL = '/home'
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'SCOPE': [
-            'profile',
-            'email',
-            "https://www.googleapis.com/auth/admin.directory.user.readonly",
-            "https://www.googleapis.com/admin/directory/v1/users/userKey",
-            "https://www.googleapis.com/auth/admin.directory.user.alias.readonly",
-        ],
-        'AUTH_PARAMS': {
-            'access_type': 'online',
-        }
-    }
-}
+# SITE_ID = 2
+# LOGIN_REDIRECT_URL = '/home'
+# SOCIALACCOUNT_PROVIDERS = {
+#     'google': {
+#         'SCOPE': [
+#             'profile',
+#             'email',
+#             "https://www.googleapis.com/auth/admin.directory.user.readonly",
+#             "https://www.googleapis.com/admin/directory/v1/users/userKey",
+#             "https://www.googleapis.com/auth/admin.directory.user.alias.readonly",
+#         ],
+#         'AUTH_PARAMS': {
+#             'access_type': 'online',
+#         }
+#     }
+# }
 
