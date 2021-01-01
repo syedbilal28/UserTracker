@@ -332,3 +332,4 @@ def qrcode(request):
     print(path)
 
     return render(request,"qrcode.html",{"qrcode":path[:-1]})
+

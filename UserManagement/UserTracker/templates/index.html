@@ -34,34 +34,28 @@
         /* margin-top: -20px; */
         margin: 0px;
         width: 100vw;
-        height: auto;
+        height: 80vh;
+        z-index: -1;
+        /* border:1px solid black; */
      }
-     #dashboard,#exeperience{
+     /* #dashboard,#exeperience{
          /* margin-top: -19px; */
-     }
-     #top{
-         /* position:absolute; */
-         /* position:absolute; */
+     /* } */
+      /* #top{
+        
          position: relative;
          display: block;
          
-         /* height:100%; */
-        /* background-image: url("{% static '1.png' %}");
-        background-repeat: no-repeat;
-        background-size: contain;
-        height:83vh;
-        min-width:100vw; 
-        min-height: 300px; */
-         /* /* max-height: 700px; */
 
-     }
-     #top img,#dashboard img,#experience_img, #aboutus_img{
+     } */
+    #top img,#dashboard img,#experience_img, #aboutus_img,#how-it-works_img{
          position: absolute;
-         z-index:-1;
+         /* z-index:-1; */
          object-fit: cover;
          width:100%;
-         height: auto;
-     }
+         height:100%;
+         /* height: auto; */
+     } 
      
      nav{
          position: absolute;
@@ -229,20 +223,14 @@
         <div class="row" id="aboutus">
             <img src="{% static '2.png' %}" alt="" id="aboutus_img">
         </div>
+        <div class="row" id="how-it-works">
+            <img src="{% static '4.png' %}" alt="" id="how-it-works_img">
+        </div>
+       
     </div>
    
     <script>
-        // var context= {{ message }}
-        
-        var dash_top=$("#dashboard").css("top")
-        var to_apply= $("#top_img").css("height")
-        $("#dashboard_img").css("top",to_apply)
-        var to_apply_experience=parseInt(to_apply) + parseInt($("#dashboard_img").css("height"))
-        console.log(to_apply_experience)
-        $("#experience_img").css("top",to_apply_experience)
-        var to_apply_aboutus=parseInt(to_apply_experience) + parseInt($("#experience_img").css("height"))
-        // console.log(to_apply_experience)
-        $("#aboutus_img").css("top",to_apply_aboutus)
+      
         
         function display_form (){
             $('#exampleModal').modal('show');
