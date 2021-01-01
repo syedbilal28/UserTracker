@@ -245,6 +245,11 @@ tr:hover td {
         <a href="https://covid19.gov.gd/contact/">Hotline</a>
       </li>
       <hr>
+      <li>
+        
+        <a href="{% url 'qrcode' %}">Go to Qrcode</a>
+      </li>
+      <hr>
     </ul>
   </div>
     <div class="container">
@@ -254,20 +259,22 @@ tr:hover td {
         </div>
         <div id="bargraph24">
           <p class="search">Date Range Filter</p>
-          <input type="text" id="24_date_filter" placeholder="dd-mm-yyyy">
+          <input type="date" id="24_date_filter" placeholder="dd-mm-yyyy">
+         
           <button id="24_search" onclick="get_graph_data(event)" class="btn btn-primary">Search</button>
           <img src="" alt="">
         </div>
         <div class='row'>
           <div id="bargraphweek" class="col-sm">
             <p class="search">Date Range Filter</p>
-          <input type="text" id="24_date_filter" placeholder="dd-mm-yyyy">
+          <input type="date" id="24_date_filter_start" placeholder="dd-mm-yyyy">
+          <!-- <input type="date" id="24_date_filter" placeholder="dd-mm-yyyy"> -->
           <button id="24_search" onclick="get_graph_data(event)" class="btn btn-primary">Search</button>
             <img src="" alt="">
           </div>
           <div id="bargraphmonth" class="col-sm">
             <p class="search">Date Range Filter</p>
-          <input type="text" id="24_date_filter" placeholder="dd-mm-yyyy">
+          <input type="date" id="24_date_filter_start" placeholder="dd-mm-yyyy">
           <button id="24_search" onclick="get_graph_data(event)" class="btn btn-primary">Search</button>
             <img src="" alt="">
           </div>

@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How It Works</title>
+    <style>
+        body{
+            overflow-x: hidden;
+            margin: 0px;
+        }
+        img{
+            width:100vw;
+            height:auto;
+            object-fit: contain;
+            padding:0px;
+            margin:0px;
+        }
+    </style>
+</head>
+<body>
+    <img src="{% static '4.png' %}" alt="">
+    <img src="{% static '8.png' %}" alt="" style="margin-top: -10px;" >
+</body>
+</html>

@@ -1,5 +1,5 @@
 {% load static %}
-{% load socialaccount %}
+
 {% load crispy_forms_tags %}
 <!DOCTYPE html>
 <html lang="en">
@@ -7,7 +7,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
     <title>Login</title>
     <style>
@@ -16,44 +17,72 @@
          padding: 0px;
          font-family: 'Open Sans', sans-serif;
          overflow-x: hidden;
-         overflow-y: hidden;
+         /* overflow-y: hidden; */
+        
      }
      .container{
          margin: 0px; 
          padding: 0px;
          width:100vw;
+         position: relative;
          
          
      }
-     
+     .row{
+        position: relative;   
+        display: block; 
+        /* margin-top: -20px; */
+        margin: 0px;
+        width: 100vw;
+        height: auto;
+     }
+     #dashboard,#exeperience{
+         /* margin-top: -19px; */
+     }
      #top{
-         position:relative;
+         /* position:absolute; */
+         /* position:absolute; */
+         position: relative;
+         display: block;
          
-         height:90vh;
-         background-image: url("{% static 'CONTACTU Landing Page.png' %}");
-         background-repeat: no-repeat;
-         background-size: contain;
-         width:100vw;
+         /* height:100%; */
+        /* background-image: url("{% static '1.png' %}");
+        background-repeat: no-repeat;
+        background-size: contain;
+        height:83vh;
+        min-width:100vw; 
+        min-height: 300px; */
+         /* /* max-height: 700px; */
 
      }
+     #top img,#dashboard img,#experience_img, #aboutus_img{
+         position: absolute;
+         z-index:-1;
+         object-fit: cover;
+         width:100%;
+         height: auto;
+     }
+     
      nav{
          position: absolute;
          height:20%;
-         width:100%;
+         width:100vw;
          padding-top: 1rem;
          
      }
      nav a{
          text-decoration: none;
-         /* font-size: 2vmin; */
+         font-size: 2.5vmin;
          /* margin-top: 2rem; */
-         font-size: 1.75rem;
+         /* font-size: 1.75rem; */
          color:white;
-         font-weight: 500;
+         
+         /* font-weight: 500; */
      }
      nav a:hover{
          text-decoration: none;
          color:black;
+         cursor: pointer;
      }
      #signup{
          padding:0.75rem 1rem;
@@ -62,16 +91,25 @@
          background-color:rgba(0,0,0,0.7);
          float: right;
          border-radius: 5rem;
+         color: white;
      }
      #signup:hover{
          background-color: white;
          color:black;
      }
      #logo{
-         padding:0px 1rem;
-         width:5rem;
-         height: 5rem;
-         margin-right: 4rem;
+        padding:0.75rem 1rem;
+         /* margin-top: 1rem; */
+         margin-left: 2rem;
+         background-color:rgba(0,0,0,0.7);
+         /* float: right; */
+         border-radius: 5rem;
+         color: white;
+     }
+
+     #logo:hover{
+        background-color: white;
+         color:black;
      }
      #form_container{
          display: none;
@@ -125,46 +163,15 @@
          background-color: black;
          color:white;
      }
-     #top h1{
-         position: absolute;
-         margin-top:15%;
-         margin-left: 1rem;
-         font-size: 6vmin;
-         color: #f2f2f2;
-     }
-     #bottom1{
-         position: absolute;
-         width:105%;
-         height:50vh;
-         background-color:rgba(210, 100, 80,0.2);
-        
-     }
-     .col-sm{
-         padding:0;
-         width:50%;
-         text-align: center;
-     }
-     .col-sm img{
-         margin-top: 1.5rem;
-         width:60%;
-         height:45vh;
-         margin-left: auto;
-         margin-right:auto ;
-     }
-     .col-sm ul{
-         margin-top:5rem;
-         padding-left:5rem;
-         list-style: none;
-         
-     }
-     .col-sm ul li{
-         padding-bottom: 1rem;
-     }
-     footer{
+     
+     
+    
+     /* footer{
          height:100vh;
          background-color: #666666;
          background:linear-gradient(to right,#666666 , white );;
-     }
+     } */
+    
  </style>
 </head>
 <body>
@@ -180,11 +187,14 @@
                   </button>
                 </div>
                 <div class="modal-body">
+                    {% if message %}
+                    {{ message }}
+                    {% endif %}
                     <form method="post" action="{% url 'index' %}" id="form">
                         {% csrf_token %}
                         {{ form|crispy }}
                   
-                        <a href="{% provider_login_url 'google' %}">Login with Google</a>
+                      
                         <button type="submit" class="btn btn-primary" id="loginbtn">Login</button>
                     </form>
                 </div>
@@ -194,35 +204,46 @@
                 </div>
               </div>
             </div>
-          </div>
-        <div id="top">
-            <!-- <img src="{% static 'homepage.jpeg' %}" alt=""> -->
-            <nav>
-                
-                    <!-- <a href="{% url 'index' %}" id="logo">Logo</a> -->
-                    
-                    <a href="{% url 'signup' %}" id="signup">Signup</a>
-                    <a onclick="display_form()" id="signup">Login</a>
-                
-            </nav>
-            
-            <!-- <div id="form_container">
-                <form method="post" action="{% url 'index' %}" id="form">
-                    {% csrf_token %}
-                    {{ form|crispy }}
-              
-                    <a href="{% provider_login_url 'google' %}">Login with Google</a>
-                    <button type="submit" class="btn btn-primary" id="loginbtn">Login</button>
-                </form>
-            
-            </div> -->
         </div>
-        <footer>
-
-        </footer>
+        <nav>
+                
+            <a href="{% url 'HowItWorks' %}" id="logo">How It Works</a>
+            
+            <a href="{% url 'signup' %}" id="signup">Signup</a>
+            <a onclick="display_form()" id="signup">Login</a>
+        
+    </nav>
+        <div id="top" class="row">
+           
+            <img src="{% static '1.png' %}" alt="" id ="top_img">
+            <!-- <img src="{% static 'homepage.jpeg' %}" alt=""> -->
+           
+        </div>
+        <div id="dashboard" class="row">
+            <img src="{% static '6.png' %}" alt="" id="dashboard_img">
+        </div>
+        <div id="experience" class="row">
+            <img src="{% static '5.png' %}" alt="" id="experience_img">
+        </div>
+       
+        <div class="row" id="aboutus">
+            <img src="{% static '2.png' %}" alt="" id="aboutus_img">
+        </div>
     </div>
    
     <script>
+        // var context= {{ message }}
+        
+        var dash_top=$("#dashboard").css("top")
+        var to_apply= $("#top_img").css("height")
+        $("#dashboard_img").css("top",to_apply)
+        var to_apply_experience=parseInt(to_apply) + parseInt($("#dashboard_img").css("height"))
+        console.log(to_apply_experience)
+        $("#experience_img").css("top",to_apply_experience)
+        var to_apply_aboutus=parseInt(to_apply_experience) + parseInt($("#experience_img").css("height"))
+        // console.log(to_apply_experience)
+        $("#aboutus_img").css("top",to_apply_aboutus)
+        
         function display_form (){
             $('#exampleModal').modal('show');
             // var to_change=$("#form_container")
