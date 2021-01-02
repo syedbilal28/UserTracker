@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,HttpResponse
 from .models import Profile,Login,Company,Customer
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout,authenticate
@@ -37,6 +37,9 @@ def index(request):
             password=form.cleaned_data["password"]
             
             user=authenticate(request,username=username,password=password)
+            if user.profile.active==False:
+                request.session["message"]="Account not active yet"
+                return redirect('index')
             if user is None:
                 request.session["message"]="Invalid username or password"
                 return redirect('index')
@@ -332,3 +335,18 @@ def qrcode(request):
     print(path)
 
     return render(request,"qrcode.html",{"qrcode":path[:-1]})
+def SignupRequests(request):
+    unsigned_profiles=Profile.objects.filter(active=False)
+    context={"Unsigned_Profiles":unsigned_profiles}
+    return render(request,"signuprequests.html",context)
+@csrf_exempt
+def GiveRightsUser(request):
+    try:
+        request.user.profile
+        return redirect(index) 
+    except:
+        profile_id=request.POST.get("profile_id")
+        profile=Profile.objects.get(pk=profile_id)
+        profile.active=True
+        profile.save()
+        return JsonResponse({"profile_id":profile_id},status=200)

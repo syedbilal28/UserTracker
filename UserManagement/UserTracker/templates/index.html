@@ -33,6 +33,7 @@
         display: block; 
         /* margin-top: -20px; */
         margin: 0px;
+        z-index: -1;
         width: 100vw;
         height: auto;
      }
@@ -55,8 +56,8 @@
          /* /* max-height: 700px; */
 
      }
-     #top img,#dashboard img,#experience_img, #aboutus_img{
-         position: absolute;
+     #top img,#dashboard img,#experience_img, #aboutus_img,#howitworks_img{
+         /* position: absolute; */
          z-index:-1;
          object-fit: cover;
          width:100%;
@@ -149,8 +150,8 @@
          border:1px solid #bfbfbf;
      }
      #loginbtn{
-         background-color: rgba(255,255,255,1) ;
-         color: black;
+         background-color: black ;
+         color: white;
          border: none;
          float: right;
          margin-top: 1rem;
@@ -160,8 +161,8 @@
          font-size: 2vmin;
      }
      #loginbtn:hover{
-         background-color: black;
-         color:white;
+         background-color: white;
+         color:black;
      }
      
      
@@ -207,7 +208,7 @@
         </div>
         <nav>
                 
-            <a href="{% url 'HowItWorks' %}" id="logo">How It Works</a>
+
             
             <a href="{% url 'signup' %}" id="signup">Signup</a>
             <a onclick="display_form()" id="signup">Login</a>
@@ -229,20 +230,23 @@
         <div class="row" id="aboutus">
             <img src="{% static '2.png' %}" alt="" id="aboutus_img">
         </div>
+        <div class="row" id="how-it-works">
+            <img src="{% static '4.png' %}" alt="" id="howitworks_img">
+        </div>
     </div>
    
     <script>
         // var context= {{ message }}
         
-        var dash_top=$("#dashboard").css("top")
-        var to_apply= $("#top_img").css("height")
-        $("#dashboard_img").css("top",to_apply)
-        var to_apply_experience=parseInt(to_apply) + parseInt($("#dashboard_img").css("height"))
-        console.log(to_apply_experience)
-        $("#experience_img").css("top",to_apply_experience)
-        var to_apply_aboutus=parseInt(to_apply_experience) + parseInt($("#experience_img").css("height"))
+        // var dash_top=$("#dashboard").css("top")
+        // var to_apply= $("#top_img").css("height")
+        // $("#dashboard_img").css("top",to_apply)
+        // var to_apply_experience=parseInt(to_apply) + parseInt($("#dashboard_img").css("height"))
         // console.log(to_apply_experience)
-        $("#aboutus_img").css("top",to_apply_aboutus)
+        // $("#experience_img").css("top",to_apply_experience)
+        // var to_apply_aboutus=parseInt(to_apply_experience) + parseInt($("#experience_img").css("height"))
+        // // console.log(to_apply_experience)
+        // $("#aboutus_img").css("top",to_apply_aboutus)
         
         function display_form (){
             $('#exampleModal').modal('show');
