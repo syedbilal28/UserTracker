@@ -209,14 +209,22 @@ def CurrentDayBar(request):
 def DaysBar(request):
     with verrou:
         try:
-            current_date=datetime.strptime(request.POST.get("starting_date"),"%Y-%m-%d").date()
+            starting_date=datetime.strptime(request.POST.get("starting_date"),"%Y-%m-%d").date()
+            end_date=datetime.strptime(request.POST.get("end_date"),"%Y-%m-%d").date()
         except:
-            current_date=datetime.now(pytz.timezone("America/Grenada")).date() 
+            starting_date=datetime.now(pytz.timezone("America/Grenada")).date() 
+            end_date=datetime.now(pytz.timezone("America/Grenada")).date() + timedelta(days=7)
         # current_date=datetime.now(pytz.timezone("America/Grenada")).date()
         dates=[]
-        for i in range(6,0,-1):
-            dates.append(current_date- timedelta(days=i))
-        dates.append(current_date)
+        x=starting_date
+        y=0
+        # for i in range(6,0,-1):
+        #     dates.append(starting_date- timedelta(days=i))
+        while x < end_date:
+            dates.append(starting_date + timedelta(days=y))
+            y+=1
+            x=x+timedelta(days=1)
+        dates.append(starting_date)
         print(dates)
         login_data=Login.objects.filter(timestamp__date__in=dates)
         login_data=login_data.filter(company=request.user.profile.company)
@@ -276,15 +284,26 @@ def DaysBar(request):
 def DaysBarWeek(request):
     with verrou:
         try:
-            current_date=datetime.strptime(request.POST.get("starting_date"),"%Y-%m-%d").date()
+            starting_date=datetime.strptime(request.POST.get("starting_date"),"%Y-%m-%d").date()
+            end_date=starting_date+timedelta(days=30)
         except:
-            current_date=datetime.now(pytz.timezone("America/Grenada")).date() 
+            starting_date=datetime.now(pytz.timezone("America/Grenada")).date() 
+            end_date=datetime.now(pytz.timezone("America/Grenada")).date() + timedelta(days=30)
         # current_date=datetime.now(pytz.timezone("America/Grenada")).date() 
         dates=[]
-        for i in range(29,0,-1):
-            dates.append(current_date- timedelta(days=i))
-        dates.append(current_date)
-        print(dates)
+        # for i in range(29,0,-1):
+        #     dates.append(current_date- timedelta(days=i))
+        # dates.append(current_date)
+        x=starting_date
+        y=0
+        # for i in range(6,0,-1):
+        #     dates.append(starting_date- timedelta(days=i))
+        while x < end_date:
+            print(y)
+            dates.append(starting_date + timedelta(days=y))
+            y+=1
+            x=x+timedelta(days=1)
+        # print(len(dates))
         login_data=Login.objects.filter(timestamp__date__in=dates)
         login_data=login_data.filter(company=request.user.profile.company)
         l=len(login_data)

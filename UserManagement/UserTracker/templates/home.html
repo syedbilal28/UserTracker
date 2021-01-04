@@ -26,8 +26,8 @@
         btn.onclick=download
         $('select').classname="form-control"
         bar_graph(null,document.querySelector("#bargraph24"),'/bargraph/')
-        bar_graph(null,document.querySelector("#bargraphweek"),'/daysbar/')
-        bar_graph(null,document.querySelector("#bargraphmonth"),'/daysbarweek/')
+        graph_week_month(null,null,document.querySelector("#bargraphweek"),'/daysbar/')
+        graph_week_month(null,null,document.querySelector("#bargraphmonth"),'/daysbarweek/')
         var trs=document.querySelectorAll("td")
       var l_tr=trs.length
       for (var i = 0; i < l_tr ; i++){
@@ -114,14 +114,15 @@
           <div id="bargraphweek" class="col-sm">
             <p class="search">Date Range Filter</p>
           <input type="date" id="24_date_filter_start" placeholder="dd-mm-yyyy">
-          <!-- <input type="date" id="24_date_filter" placeholder="dd-mm-yyyy"> -->
-          <button id="24_search" onclick="get_graph_data(event)" class="btn btn-primary">Search</button>
+          <input type="date" id="24_date_filter" placeholder="dd-mm-yyyy">
+          <button id="24_search" onclick=" get_week_month_graph_data(event)" class="btn btn-primary">Search</button>
             <img src="" alt="">
           </div>
           <div id="bargraphmonth" class="col-sm">
             <p class="search">Date Range Filter</p>
           <input type="date" id="24_date_filter_start" placeholder="dd-mm-yyyy">
-          <button id="24_search" onclick="get_graph_data(event)" class="btn btn-primary">Search</button>
+          <input type="date" id="24_date_filter" placeholder="dd-mm-yyyy">
+          <button id="24_search" onclick=" get_week_month_graph_data(event)" class="btn btn-primary">Search</button>
             <img src="" alt="">
           </div>
         </div>
