@@ -56,6 +56,7 @@ def index(request):
             message=""
         form = LoginForm()
         return render(request,'index.html',{"form":form,"message":message})
+@csrf_exempt
 def Checkin(request,company_id):
     company =Company.objects.get(pk=int(company_id))
     if request.method=="POST":
@@ -102,11 +103,12 @@ def Checkin(request,company_id):
                         Login.objects.create(customer=extra_customer,temperature=temperature,company=company)
             temperature=request.POST.get("temperature")
             Login.objects.create(customer=customer,temperature=temperature,company=company)
-            return render (request,"success.html")
+
+            return redirect('index')
     else:
         form=CustomerForm()
-
-        return render(request,"checkin_test.html",{"form":form,"company_id":company_id})
+        company=Company.objects.get(pk=company_id)
+        return render(request,"checkin_test.html",{"form":form,"Company":company})
 
 def Signup(request):
     if request.method=="POST":
@@ -115,7 +117,7 @@ def Signup(request):
         if form.is_valid() and form_1.is_valid():
             user=form.save()
             Profile.objects.create(user=user,company=form_1.cleaned_data["company"])
-            return redirect('index') 
+            return HttpResponse(status=200) 
     else:
         form = SignupForm()
         form_1=ProfileForm()
@@ -153,7 +155,7 @@ def home(request):
     except:
         login_last_10_df-login_last_10_df
     login_last_10_table=login_last_10_df.to_html(justify="center",index=False)
-    context={"table":login_last_10_table,"company":request.user.profile.company.pk}
+    context={"table":login_last_10_table,"Company":request.user.profile.company}
     return render(request,"home.html",context)
         # login_count=Login.objects.filter(timestamp__lte=datetime.now())
 @csrf_exempt

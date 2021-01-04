@@ -1,0 +1,40 @@
+body{
+    background-color: 	#2b2b2b;
+    color: #fff;
+    font-family: "Roboto","sans-serif";
+}
+.container{
+    margin-top: 30px;
+    
+}
+.row{
+    position:relative;
+    width: 100%;
+    /* border: 1px solid black; */
+   
+    /* height: 18vh; */
+    border-top:1px solid #7ed957;
+    border-bottom:1px solid #7ed957;
+    height: auto;   
+    
+    padding-top:0.5rem;
+    padding-bottom: 1.8rem;
+}
+button{
+    position: absolute;
+    right: 0px;
+    margin-top: 10px;
+}
+h3{
+    display: block;
+}
+p{
+    position: absolute;
+ display: inline-block;   
+ bottom: -10px;
+ z-index: 1;
+}
+.company{
+
+    left: 200px;
+}

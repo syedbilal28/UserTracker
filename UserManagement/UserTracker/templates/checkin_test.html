@@ -1,4 +1,5 @@
 {% load crispy_forms_tags %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,44 +7,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Check in Test</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-<style>
-    .container{
-        border: 1px solid #56bb2a;
-        border-radius: 3rem;
-        position: relative;
-        padding:10px;
-        margin: 20px auto;
-        padding-bottom: 50px;
-    }
-    form{
-        padding:20px;
-        margin: auto;
-    }
-    #header{
-        /* position: absolute; */
-        padding: 10px;       
-        border-bottom: 1px solid #56bb2a ;
-        /* background-color: #ff4d4d; */
-        margin: 0;
-        /* width: 100%; */
-    }
-    button{
-        float: right;
-    }
-</style>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'css/checkin.css' %}">
+    <script src="{% static 'js/checkin.js' %}"></script>
+
+
 </head>
 <body>
 
     
     <div class="container">
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Checked in</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <h3>Thank you for Checking into {{ Company.Name }}</h3>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  
+                </div>
+              </div>
+            </div>
+        </div>
         <div id="header">
             <h1>Checkin Form</h1>
             <div id="info">
                 <p>If you are in with a family, enter their name and tempereature in the notes section in the format described as in placeholder</p>
             </div>
         </div>
-        <form  method="post" action="{% url 'Checkin' company_id %}">
+        <form  method="post" action="{% url 'Checkin' Company.pk %}">
              {% csrf_token %}
             {{ form|crispy }}
             <div class="form-group">
@@ -58,5 +57,6 @@
             <button class="btn btn-primary" type="submit">Submit</button>
         </form>
     </div>
+    
 </body>
 </html>
