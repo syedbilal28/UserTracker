@@ -9,166 +9,11 @@
     <script type="text/javascript"  src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/"
     crossorigin="anonymous"></script>
-<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script><!-- html2canvas 1.0.0-alpha.11 or higher version is needed -->
-
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script><!-- html2canvas 1.0.0-alpha.11 or higher version is needed -->
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <script src="{% static 'js/home.js' %}"></script>
     <title>Dashboard</title>
-    <style>
-       @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@200;400&display=swap");
-        body{
-          font-size:2vmin;
-        }
-        table {
-  width: 100%;
-  border-collapse: collapse;
-  font-family: "Nunito", sans-serif;
-}
-thead {
-  text-transform: uppercase;
-  border-bottom: 1px solid #0e0e0e;
-  color:#56bb2a;
-
-  
-}
-th {
-    padding: 5px;
-    text-align: center;
-  }
-tr {
-  transition: opacity 0.5s ease;
-  &.hide {
-    opacity: 0;
-    height: 0;
-  }
-}
-td {
-  padding: 5px;
-  border-bottom: 1px solid #d6d6d6;
-}
-tr:hover td {
-  background: #e6e6e6;
-}
-#text-search {
-  max-width: 240px;
-  display: block;
-  width: 100%;
-  height: 44px;
-  padding: 0 10px;
-  margin: 0;
-  border: 1px solid #cccccc;
-  outline: none;
-  color: #5f6a7d;
-  
-  font: 13px;
-  font-family: "Nunito", sans-serif;
-  font-weight: 100;
-  margin-bottom: 15px;
-  float: right;
-}
-  #sidebar{
-    padding:0px;
-    background-color: #353a40;
     
-    width:15%;
-    height:100%;
-    position:fixed;
-    z-index: 1;
-    top:0;
-    left:0;
-    overflow-x: hidden; /* Disable horizontal scroll */
-  padding-top: 20px;
-  overflow-y: hidden;
-  }
-  #dataholder{
-    text-decoration: none;
-    list-style-type: none;
-    padding-left: 1rem;
-    padding-right: 0.5rem;
-  }
-  #dataholder li p{
-    color:#56bb2a;
-  }
-  .container{
-    width:85%;
-    margin-left: 15%;
-    margin-top: 3%;
-  }
-  #Logo img{
-    width:10rem;
-    height:10rem
-  }
-  hr{
-    border: 1px solid #17191c;
-    margin-left:-15px;
-    opacity:0.3;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
-  }
-  #DataTables_Table_0_length{
-    display: inline-block;
-  }
-  #DataTables_Table_0_filter{
-    display: inline-block;
-    float: right;
-    margin-right: 1rem;
-  }
-  #first_table{
-    font-family: "Nunito", sans-serif;
-  }
-  .btn-success{
-    margin-left: 17rem;
-  }
-  #DataTables_Table_0{
-    margin-top: 1rem;
-  }
-  input{
-    margin-left: 0.5rem;
-    border: 1px solid #d6cece;
-  }
-  #DataTables_Table_0_info{
-    display: inline-block;
-  }
-  #DataTables_Table_0_paginate{
-    display: inline-block;
-    float: right;
-    
-  }
-  #DataTables_Table_0_paginate a{
-    padding:0.5rem;
-    color:#56bb2a;
-  }
-  #DataTables_Table_0_paginate a:hover{
-    cursor: pointer;
-  }
-  #bargraphweek{
-    display: inline-block;
-  }
-  #bargraphmonth{
-    display: inline-block;
-  }
-  #bargraphweek img{
-    margin-left:-2rem;
-    width:33rem;
-  }
-  #bargraphmonth img{
-    margin-left:-2rem;
-    width:33rem;
-    
-  }
-  .search{
-    font-size: 1.5vmin;
-  }
-  .btn {
-    background-color:#56bb2a ;
-    color:white;
-    border:none;
-  }
-  .btn:hover{
-    background-color: #439121;
-  }
-  #flag{
-    background-color: #f25a5a;
-  }
-    </style>
     <script>
       $(document).ready(function(){
         $('Table').dataTable();
@@ -222,7 +67,7 @@ tr:hover td {
       </li>
       <hr>
       <li>
-        <p>Check in Screen</p>
+        <a href="/company/{{ Company.pk }}/checkin">Check in Screen</a>
       </li>
       <hr>
       <li>
@@ -247,12 +92,13 @@ tr:hover td {
       <hr>
       <li>
         
-        <a href="{% url 'qrcode' %}">Go to Qrcode</a>
+        <a href="{% url 'qrcode' %}">Go to Qr Code</a>
       </li>
       <hr>
     </ul>
   </div>
     <div class="container">
+      <h3>Welcome to {{ Company.Name }} dashboard</h3>
         <div id="first_table">
           
             {{ table | safe }}
@@ -280,61 +126,6 @@ tr:hover td {
           </div>
         </div>
     </div>
-    <script>
-     
-      function get_graph_data(e){
-        // const request=new XMLHttpRequest()
-        // document.querySelector("#bargraph24").children[1].value
-        console.log(e.target.parentNode.id)
-
-        // const data= new FormData()
-        // data.append('starting_date',document.querySelector("#bargraph24").children[1].value)
-        // request.send(data)
-        data_to_check=e.target.parentNode.children[1].value
-        e.target.parentNode.children[1].value=''
-        // bar_graph()
-        var url_to_hit
-        if (e.target.parentNode.id=="bargraph24"){
-          url_to_hit="/bargraph/"
-        }
-        if (e.target.parentNode.id=="bargraphweek"){
-          url_to_hit="/daysbar/"
-        }
-        if (e.target.parentNode.id=="bargraphmonth"){
-          url_to_hit="/daysbarweek/"
-        }
-        console.log(url_to_hit)
-        bar_graph(data_to_check,e.target.parentNode,url_to_hit)
-      }
-      function bar_graph(data,target,url){
-      $.ajax({
-        url: url,
-        type:"POST",
-        data: {
-          'starting_date':data
-        },
-        dataType: 'json',
-        success: function (data) {
-          console.log(data)
-          var target_24=target
-          target_24.children[3].src=`data:image/png;base64,${data.data}`
-         
-        }
-      });
-      }
-      
-      function download() {
-        let pdf = new jsPDF('l', 'pt', [1920, 640]);
-        pdf.html(document.querySelector('#DataTables_Table_0'), {
-            callback: function (pdf) {
-                pdf.save('test.pdf');
-            }
-        });
-    }
-   
-           
-    </script>
-
-
+    
 </body>
 </html>

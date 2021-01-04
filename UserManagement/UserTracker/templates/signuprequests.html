@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <title>Signup Requests</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/signuprequest.css' %}">
+    <script src="{% static 'js/signuprequests.js' %}"></script>
+</head>
+<body>
+    <div class="container">
+        {% for unsigned_profile in Unsigned_Profiles %}
+        <div class="unsigned_user row" data-info={{ unsigned_profile.pk }}>
+            <h3>{{ unsigned_profile.user.username }}</h3>   
+            <p>{{ unsigned_profile.user.email }}</p>
+            <p class="company">{{ unsigned_profile.company }}</p>
+            <button class="btn btn-dark" onclick="Allow(event)">Allow</button>
+        </div>
+        {% endfor %}
+    </div>
+    
+</body>
+</html>

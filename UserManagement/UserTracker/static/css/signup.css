@@ -1,0 +1,93 @@
+body{
+    background-color: #d9d9d9;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 2vmin;
+}
+.container{
+    /* position:relative; */
+    /* position: absolute; */
+    height:100vh;
+}
+.row{
+    /* position: absolute; */
+   
+    width:80%;
+    border-radius: 1rem;
+    
+    margin:auto;
+    vertical-align: middle;
+    margin-top: 15%;
+    position: relative;
+    min-height:60%;
+}
+#left{
+    /* border:1px solid black; */
+    background-color: #3686bd;
+    border-radius: 1rem 0px 0px 1rem;
+}
+.helptext{
+    display: none;
+}
+.col-sm{
+    
+    line-height: 2vh;
+    width:50%;
+    float:left;
+    min-height:100%;
+    padding: 1rem;
+   
+}
+#right{
+   background-color: #fff;
+   border-radius: 1rem;
+   border-radius: 0px 1rem 1rem 0px;
+}
+form{
+    position: absolute;
+    height:100%;
+    
+}
+label{
+    display: block;
+}
+p{
+    display: inline-block;
+    padding-left: 3rem;
+    padding-top:1vh;
+}
+h2{
+    color: #fff;
+    padding:3rem;
+    font-size: 4.5vmin;
+}
+#id_email{
+    display:block;
+}
+#right h2{
+    color:#408ec6;
+}
+input{
+    border-radius: 0.25rem;
+    border: 1px solid #d6cece;
+    height:3vh;
+}
+#submit_button{
+    display: block;
+    margin-left:3rem;
+    margin-top: 3rem;
+    height: 4rem;
+    width: 10rem;
+}
+select{
+    border: 1px solid #d6cece;
+}
+@media only screen and (max-width: 768px) {
+    p,h2{
+
+    padding-left: 0.5rem;
+    
+}
+#submit_button{
+    margin-left: 2rem;
+}
+}

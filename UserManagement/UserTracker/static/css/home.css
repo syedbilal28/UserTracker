@@ -1,0 +1,155 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@200;400&display=swap");
+body{
+  font-size:2vmin;
+}
+table {
+width: 100%;
+border-collapse: collapse;
+font-family: "Nunito", sans-serif;
+}
+thead {
+text-transform: uppercase;
+border-bottom: 1px solid #0e0e0e;
+color:#56bb2a;
+
+
+}
+th {
+padding: 5px;
+text-align: center;
+}
+tr {
+transition: opacity 0.5s ease;
+&.hide {
+opacity: 0;
+height: 0;
+}
+}
+td {
+padding: 5px;
+border-bottom: 1px solid #d6d6d6;
+}
+tr:hover td {
+background: #e6e6e6;
+}
+#text-search {
+max-width: 240px;
+display: block;
+width: 100%;
+height: 44px;
+padding: 0 10px;
+margin: 0;
+border: 1px solid #cccccc;
+outline: none;
+color: #5f6a7d;
+
+font: 13px;
+font-family: "Nunito", sans-serif;
+font-weight: 100;
+margin-bottom: 15px;
+float: right;
+}
+#sidebar{
+padding:0px;
+background-color: #353a40;
+
+width:15%;
+height:100%;
+position:fixed;
+z-index: 1;
+top:0;
+left:0;
+overflow-x: hidden; /* Disable horizontal scroll */
+padding-top: 20px;
+overflow-y: hidden;
+}
+#dataholder{
+text-decoration: none;
+list-style-type: none;
+padding-left: 1rem;
+padding-right: 0.5rem;
+}
+#dataholder li p{
+color:#56bb2a;
+}
+.container{
+width:85%;
+margin-left: 15%;
+margin-top: 3%;
+}
+#Logo img{
+width:10rem;
+height:10rem
+}
+hr{
+border: 1px solid #17191c;
+margin-left:-15px;
+opacity:0.3;
+margin-top: 0.5rem;
+margin-bottom: 0.5rem;
+}
+#DataTables_Table_0_length{
+display: inline-block;
+}
+#DataTables_Table_0_filter{
+display: inline-block;
+float: right;
+margin-right: 1rem;
+}
+#first_table{
+font-family: "Nunito", sans-serif;
+}
+.btn-success{
+margin-left: 17rem;
+}
+#DataTables_Table_0{
+margin-top: 1rem;
+}
+input{
+margin-left: 0.5rem;
+border: 1px solid #d6cece;
+}
+#DataTables_Table_0_info{
+display: inline-block;
+}
+#DataTables_Table_0_paginate{
+display: inline-block;
+float: right;
+
+}
+#DataTables_Table_0_paginate a{
+padding:0.5rem;
+color:#56bb2a;
+}
+#DataTables_Table_0_paginate a:hover{
+cursor: pointer;
+}
+#bargraphweek{
+display: inline-block;
+}
+#bargraphmonth{
+display: inline-block;
+}
+#bargraphweek img{
+margin-left:-2rem;
+width:33rem;
+}
+#bargraphmonth img{
+margin-left:-2rem;
+width:33rem;
+
+}
+.search{
+font-size: 1.5vmin;
+}
+.btn {
+background-color:#56bb2a ;
+color:white;
+border:none;
+}
+.btn:hover{
+background-color: #439121;
+}
+#flag{
+background-color: #f25a5a;
+}

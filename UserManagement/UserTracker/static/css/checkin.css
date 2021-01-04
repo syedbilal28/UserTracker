@@ -1,0 +1,23 @@
+.container{
+    border: 1px solid #56bb2a;
+    border-radius: 3rem;
+    position: relative;
+    padding:10px;
+    margin: 20px auto;
+    padding-bottom: 50px;
+}
+form{
+    padding:20px;
+    margin: auto;
+}
+#header{
+    /* position: absolute; */
+    padding: 10px;       
+    border-bottom: 1px solid #56bb2a ;
+    /* background-color: #ff4d4d; */
+    margin: 0;
+    /* width: 100%; */
+}
+button{
+    float: right;
+}

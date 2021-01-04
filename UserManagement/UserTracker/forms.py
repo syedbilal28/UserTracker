@@ -19,6 +19,7 @@ class SignupForm(forms.ModelForm):
             'last_name',
             'username',
             'email',
+            
             'password',
             
         ]
@@ -32,5 +33,6 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model=Profile
         fields=[
-            "company"
+            "company",
+            "contact_number"
             ]

@@ -10,7 +10,9 @@ urlpatterns=[
     # path("Success/",views.Success,name="Success"),
     path("company/<str:company_id>/checkin",views.Checkin,name="Checkin"),
     path("how-it-works/",views.HowItWorks,name="HowItWorks"),
-    path("qrcode/",views.qrcode,name="qrcode")
+    path("qrcode/",views.qrcode,name="qrcode"),
+    path("unsigned/",views.SignupRequests,name="SignupRequests"),
+    path("register/",views.GiveRightsUser,name="GiveRightsUser")
     # path('logout/',views.Logout,name="Logout"),
     
 ]
