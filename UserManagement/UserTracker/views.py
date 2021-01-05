@@ -367,7 +367,11 @@ def GiveRightsUser(request):
         return redirect(index) 
     except:
         profile_id=request.POST.get("profile_id")
-        profile=Profile.objects.get(pk=profile_id)
-        profile.active=True
-        profile.save()
+        try:
+            profile=Profile.objects.get(pk=profile_id)
+
+            profile.active=True
+            profile.save()
+        except:
+            profile_id=None
         return JsonResponse({"profile_id":profile_id},status=200)
